@@ -1,5 +1,5 @@
 {
-    "body": "{\"source\": \"keepalive\"}",
+    "body": "{\"body\": \"{\"message\":\"test_message\"}\"}",
     "resource": "/path/to/resource",
     "path": "/path",
     "httpMethod": "GET",
