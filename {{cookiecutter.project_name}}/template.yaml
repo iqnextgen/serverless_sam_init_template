@@ -41,6 +41,10 @@ Resources:
     Properties:
       Name: {{cookiecutter.api_logical_name}}
       StageName: !Ref Environment
+      Cors:  # Enables CORS when running locally
+        AllowMethods: "'POST, OPTIONS'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'*'"
   ServerLessFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
