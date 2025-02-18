@@ -17,13 +17,13 @@ Parameters:
   Environment:
     Type: String
     Default: dev
-    Description: Evironment (dev, qa, val, prod)
+    Description: Environment (dev, qa, val, prod)
 
 Resources:
   ServiceApi:
     Type: AWS::Serverless::Api
     Properties:
-      Name: "{{cookiecutter.project_name}}Api" 
+      Name: {{cookiecutter.api_logical_name}}
       StageName: !Ref Environment
   ServerLessFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -35,13 +35,13 @@ Resources:
         - {{arch}}
       {%- endfor %}
       {%- endif %}
-      FunctionName: "{{cookiecutter.project_name}}Function"
+      FunctionName: {{cookiecutter.function_logical_name}} 
       Events:
         EventApi:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             RestApiId: !Ref ServiceApi
-            Path: /{{cookiecutter.project_name}}
+            Path: /{{cookiecutter.event_res_path}}
             Method: POST
     Metadata:
       Dockerfile: Dockerfile
@@ -54,7 +54,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   ServiceApi:
     Description: "API Gateway endpoint URL for Stage environment for ServerLess function"
-    Value: !Sub "https://${ServiceApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/{{cookiecutter.__stack_name}}/"
+    Value: !Sub "https://${ServiceApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/{{cookiecutter.event_res_path}}/"
   ServerLessFunction:
     Description: "Serverless Lambda Function ARN"
     Value: !GetAtt ServerLessFunction.Arn
