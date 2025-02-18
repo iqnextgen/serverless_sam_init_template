@@ -20,6 +20,22 @@ Parameters:
     Description: Environment (dev, qa, val, prod)
 
 Resources:
+  ServerLessExecFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      RoleName: {{cookiecutter.function_iam_role}}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
   ServiceApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -29,6 +45,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       PackageType: Image
+      Role: !GetAtt ServerLessExecFunctionRole.Arn
       {%- if cookiecutter.architectures.value != []%}
       Architectures:
       {%- for arch in cookiecutter.architectures.value %}
@@ -58,6 +75,6 @@ Outputs:
   ServerLessFunction:
     Description: "Serverless Lambda Function ARN"
     Value: !GetAtt ServerLessFunction.Arn
-  ServerLessFunctionIamRole:
+  ServerLessExecFunctionRole:
     Description: "Implicit IAM Role created for ServerLess function"
-    Value: !GetAtt ServerLessFunctionRole.Arn
+    Value: !GetAtt ServerLessExecFunctionRole.Arn

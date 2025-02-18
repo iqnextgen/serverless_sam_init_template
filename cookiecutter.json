@@ -1,6 +1,8 @@
 {
     "project_name": "Name of the project",
     "function_logical_name": "{{ cookiecutter.project_name }}Function",
+    "function_iam_role": "{{ cookiecutter.project_name }}IAMRole",
+    "function_ecr": "{{ cookiecutter.project_name.lower() }}-ecr",
     "api_logical_name": "{{ cookiecutter.project_name }}Api",
     "event_res_path": "{{ cookiecutter.project_name.lower() }}",
     "runtime": "python3.13",
@@ -12,5 +14,5 @@
     "_copy_without_render": [
         ".gitignore"
     ],
-    "__stack_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}"
+    "__stack_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}Stack"
 }
